@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Žreb v6.1 — DSG premium tema</title>
+<link id="favicon" rel="icon" href="" />
+<style>
+  /* ====== THEME (WCAG friendly) ====== */
+  :root {
+    --bg:#0b1020;           /* tamnija pozadina radi jačeg kontrasta */
+    --panel:#0e1426;
+    --muted:#a7b0c0;
+    --text:#eef2f8;
+    --ink:#0b1020;
+    --card:#0a1122;
+    --border:#1f2a44;
+    --elev:#0e152b;
+    --accent:#00e5ff;       /* poboljšan akcenat (cyan) */
+    --accent-600:#00b8d1;
+    --accent2:#39e58c;      /* sekundarna (mint) */
+    --danger:#ff6b6b;
+    --ring: rgba(0,229,255,.35);
+    --brand-ink:#000;
+    --wm-opacity:.055;
+    --radius:16px;
+    --shadow:0 6px 20px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;
+    background:
+      radial-gradient(1000px 600px at 80% -10%, #0f1731 10%, transparent 60%),
+      linear-gradient(180deg, var(--bg), #090f1e 60%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  header{
+    position:sticky; top:0; z-index:5;
+    backdrop-filter:saturate(120%) blur(6px);
+    background:linear-gradient(180deg, rgba(12,18,38,.9), rgba(12,18,38,.75));
+    border-bottom:1px solid var(--border);
+    padding:14px clamp(16px,4vw,36px);
+    display:flex; gap:14px; align-items:center;
+  }
+  .brand-logo{
+    width:64px;height:64px;border-radius:50%;
+    background:#000;border:1px solid var(--border);
+    background-size:cover;background-position:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.35);
+    flex:0 0 64px;
+  }
+  .brand-title{display:grid;line-height:1.1}
+  .brand-title h1{margin:0;font-size:clamp(18px,3vw,28px);letter-spacing:.3px}
+  .brand-title p{margin:2px 0 0 0;color:var(--muted);font-size:12.5px}
+  .wrap{display:grid;gap:16px;padding:18px clamp(16px,4vw,36px) 28px}
+  .panel{
+    background:linear-gradient(180deg, var(--panel), var(--elev));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .panel h2{margin:0 0 12px 0;font-size:18px}
+  .grid-2{display:grid;gap:14px;grid-template-columns:1fr}
+  @media(min-width:1100px){.grid-2{grid-template-columns:1fr 1fr}}
+  .row{display:grid;gap:8px}
+  label.small{font-size:12px;color:var(--muted)}
+  textarea,input[type="text"],input[type="number"],input[type="color"]{
+    width:100%;background:var(--card);color:var(--text);
+    border:1px solid var(--border);border-radius:12px;padding:10px;resize:vertical;
+    outline:none; box-shadow:none;
+  }
+  input[type="text"]:focus, textarea:focus{
+    border-color:var(--accent-600);
+    box-shadow:0 0 0 4px var(--ring);
+  }
+  input[type="file"]{color:var(--muted)}
+  .btns{display:flex;flex-wrap:wrap;gap:10px}
+  button{
+    background:linear-gradient(180deg,var(--accent),var(--accent-600));
+    color:#002027;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,229,255,.25);
+  }
+  button.secondary{background:linear-gradient(180deg,var(--accent2),#31c97c); color:#001a0e; box-shadow:0 4px 14px rgba(57,229,140,.25)}
+  button.ghost{background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none}
+  button.danger{background:linear-gradient(180deg,var(--danger),#e45757);color:#2a0707;box-shadow:0 4px 14px rgba(255,107,107,.2)}
+  .small{color:var(--muted);font-size:12px}
+  .brackets{display:grid;gap:18px}
+  .bracket{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg, #0b132a, #0b1426);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px;
+  }
+  .bracket:before{
+    content:""; position:absolute; inset:0;
+    background-repeat:no-repeat; background-position:center; background-size:50%;
+    opacity:var(--wm-opacity,0.055); pointer-events:none; filter:grayscale(1) contrast(1.1);
+    background-image:var(--wm-url);
+  }
+  .bracket-header{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .rounds{overflow-x:auto;padding-bottom:6px}
+  .round{display:inline-grid;gap:10px;padding:8px;min-width:280px;vertical-align:top}
+  .round h4{margin:0 0 6px 0;color:var(--muted);font-weight:600;font-size:14px}
+  .match{
+    background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(255,255,255,.03));
+    border:1px solid var(--border);border-radius:14px;padding:8px;display:grid;gap:6px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+    position:relative;
+  }
+  .match:after{
+    content:""; position:absolute; right:8px; top:8px; width:22px; height:22px; opacity:.12;
+    background-size:cover; background-position:center; background-image:var(--wm-url);
+    filter:grayscale(1) contrast(1.2);
+  }
+  .pair{display:grid;gap:6px}
+  .fighter{display:flex;align-items:center;gap:8px;background:#0f182f;border:1px solid #1a2744;border-radius:10px;padding:7px 10px}
+  .fighter input{accent-color:var(--accent2)}
+  .fighter label{flex:1;font-size:14px}
+  .bye{opacity:.55}
+  .winner{background:rgba(57,229,140,.14);border-color:rgba(57,229,140,.45)}
+  .category-card{border:1px solid var(--border);border-radius:14px;padding:12px;background:linear-gradient(180deg,#0b1220,#0b1324)}
+  .category-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .section-title{margin:8px 0 4px 8px;color:var(--muted);font-size:13px}
+  .checkbox{display:inline-flex;gap:8px;align-items:center}
+  .list{display:grid;gap:14px}
+
+  /* ====== PRINT BRANDING ====== */
+  @media print{
+    body{background:#fff;color:#000;-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    header{position:static;background:#fff;color:#000;border-bottom:1px solid #bbb;box-shadow:none}
+    .brand-title p{color:#333}
+    .bracket, .panel{border-color:#bbb; box-shadow:none}
+    .panel .btns,#controlsTop,.category-actions,.branding{display:none!important}
+    .page-header{display:block}
+  }
+  .page-header{display:none; text-align:center; margin:0 0 10px 0; font-weight:700}
+  .page-footer{display:none}
+  @page{
+    size:auto;
+    margin:16mm 12mm;
+  }
+  @media print{
+    .page-footer{
+      display:block;
+      position:fixed; bottom:8mm; left:0; right:0;
+      text-align:center; font-size:11px; color:#444;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-logo" id="brandLogo"></div>
+  <div class="brand-title">
+    <h1 id="brandTitle">DSG • ŽREB</h1>
+    <p>Muay Thai • Kickboxing • Kyokushin-kan • Grappling • MMA</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="page-header" id="printHeader">DSG • ŽREB</div>
+
+  <!-- BRANDING CONTROL -->
+  <section class="panel branding">
+    <h2>0) Brending</h2>
+    <div class="grid-2">
+      <div class="row">
+        <label class="small">Naziv u zaglavlju</label>
+        <input type="text" id="clubName" placeholder="DSG • ŽREB" />
+      </div>
+      <div class="row">
+        <label class="small">Akcent boja</label>
+        <input type="color" id="accentColor" value="#00e5ff"/>
+      </div>
+      <div class="row">
+        <label class="small">Sekundarna boja</label>
+        <input type="color" id="accent2Color" value="#39e58c"/>
+      </div>
+      <div class="row">
+        <label class="small">Logo (PNG/JPG/SVG)</label>
+        <input type="file" id="logoFile" accept="image/*"/>
+        <div class="small">Logo ide u header i kao diskretan watermark. Čuva se lokalno.</div>
+      </div>
+      <div class="row">
+        <label class="small">Watermark jačina (0–0.2 preporuka)</label>
+        <input type="number" id="wmOpacity" min="0" max="1" step="0.01" value="0.055"/>
+      </div>
+    </div>
+    <div class="btns" style="margin-top:6px">
+      <button class="ghost" id="applyBrand">Primeni brending</button>
+      <button class="danger" id="resetBrand">Vrati podrazumevano</button>
+      <button id="print">Štampa / PDF</button>
+    </div>
+  </section>
+
+  <!-- GLOBAL CONTROLS -->
+  <section class="panel" id="controlsTop">
+    <h2>1) Kategorije & globalne akcije</h2>
+    <div class="btns">
+      <input id="newCatName" type="text" placeholder="Naziv nove kategorije (opciono)" />
+      <button id="addCategory" onclick="window.addCategoryNow()" ontouchend="window.addCategoryNow(); return false;">+ Dodaj kategoriju</button>
+      <button class="secondary" id="buildAll">Napravi žreb za sve</button>
+      <button class="ghost" id="shuffleAll">Izmešaj sve liste</button>
+      <button class="ghost" id="resetWinners">Poništi sve pobednike</button>
+      <button class="danger" id="clearAll">Očisti sve (reset)</button>
+      <button class="ghost" id="exportCSV">Izvezi rezultate (CSV)</button>
+      <button class="ghost" id="exportXLS">Izvezi rezultate (Excel)</button>
+    </div>
+    <div id="status" class="small"></div>
+  </section>
+
+  <section class="list" id="categoryList"></section>
+
+  <!-- ABSOLUTE SECTION -->
+  <section class="panel">
+    <h2>2) Apsolutna (Superfajt žreb)</h2>
+    <div class="row"><label class="checkbox"><input type="checkbox" id="absBronze" /> Uključi bronzanu borbu u Apsolutnoj</label></div>
+    <div class="row" style="margin-top:8px">
+      <label class="small">Ručni unos učesnika (opciono — privremeno isključuje auto-mode)</label>
+      <textarea id="absManual" placeholder="Unesi učesnike apsolutne… (po jedan u liniji)"></textarea>
+      <div class="btns"><button id="applyAbsManual" class="ghost">Primeni ručni unos</button></div>
+    </div>
+  </section>
+
+  <section class="brackets" id="bracketsRender"></section>
+  <section class="brackets" id="absoluteRender"></section>
+
+  <div class="page-footer" id="printFooter"></div>
+</div>
+
+<script>
+(function(){
+  const log = (msg)=>{ const el=document.getElementById('status'); if(!el) return; el.textContent = (el.textContent? el.textContent + '\\n' : '') + msg; };
+
+  // Storage with fallback
+  const STORAGE_KEY = 'zreb_state_v6_1_branding';
+  let memStore = {};
+  function safeGet(){ try{ return localStorage.getItem(STORAGE_KEY); }catch(e){ return memStore[STORAGE_KEY]||null; } }
+  function safeSet(v){ try{ localStorage.setItem(STORAGE_KEY, v); }catch(e){ memStore[STORAGE_KEY]=v; } }
+  function safeRemove(){ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){ delete memStore[STORAGE_KEY]; } }
+
+  const qs = s => document.querySelector(s);
+  const qsa = s => Array.from(document.querySelectorAll(s));
+
+  // Branding DOM
+  const brandLogo = qs('#brandLogo');
+  const brandTitle = qs('#brandTitle');
+  const clubName = qs('#clubName');
+  const accentColor = qs('#accentColor');
+  const accent2Color = qs('#accent2Color');
+  const wmOpacity = qs('#wmOpacity');
+  const logoFile = qs('#logoFile');
+  const btnApplyBrand = qs('#applyBrand');
+  const btnResetBrand = qs('#resetBrand');
+  const favicon = qs('#favicon');
+  const printHeader = qs('#printHeader');
+  const printFooter = qs('#printFooter');
+  const btnPrint = qs('#print');
+
+  // Controls
+  const newCatNameInp = qs('#newCatName');
+  const btnBuildAll= qs('#buildAll');
+  const btnShuffleAll= qs('#shuffleAll');
+  const btnResetAll= qs('#resetWinners');
+  const btnClearAll= qs('#clearAll');
+  const btnCSV= qs('#exportCSV');
+  const btnXLS= qs('#exportXLS');
+  const categoryList = qs('#categoryList');
+  const bracketsRender = qs('#bracketsRender');
+  const absoluteRender = qs('#absoluteRender');
+  const absManual = qs('#absManual');
+  const btnApplyAbsManual = qs('#applyAbsManual');
+  const absBronze = qs('#absBronze');
+
+  const uid = ()=>'c'+Math.random().toString(36).slice(2,9);
+  const cleanName = s => (s||'').replace(/\\s+/g,' ').trim();
+  function randInt(n){ return Math.floor(Math.random()*n); }
+  function shuffleList(a){ for(let i=a.length-1;i>0;i--){ const j=randInt(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  function nextPow2(n){ let p=1; while(p<n) p<<=1; return p; }
+  function withByes(list){ const target = nextPow2(list.length); const out = list.slice(); while(out.length<target) out.push('BYE'); return out; }
+  function autoWinner(a,b){ if(a==='BYE'&&b==='BYE') return ''; if(a==='BYE') return b; if(b==='BYE') return a; return ''; }
+  function roundName(idx, total){ return (idx===total-1)?'Finale' : (idx===total-2)?'Polufinale' : (idx===0)?'Kvalifikacije / 1. kolo' : `Runda ${idx+1}`; }
+
+  let state = {
+    categories: [],
+    absolute: { competitors:[], rounds:[], bronze:{a:'',b:'',winner:''}, includeBronze:false, manual:false },
+    brand: { title:'DSG • ŽREB', accent:'#00e5ff', accent2:'#39e58c', wmOpacity:0.055, logoDataUrl:'' }
+  };
+
+  // BRANDING APPLY
+  function applyBranding(){
+    brandTitle.textContent = state.brand.title || 'Žreb';
+    printHeader.textContent = state.brand.title || 'Žreb';
+    const d = new Date();
+    printFooter.textContent = (state.brand.title||'Žreb') + ' — ' + d.toLocaleDateString() + ' · ' + d.toLocaleTimeString();
+    document.documentElement.style.setProperty('--accent', state.brand.accent||'#00e5ff');
+    document.documentElement.style.setProperty('--accent-600', state.brand.accent||'#00b8d1');
+    document.documentElement.style.setProperty('--accent2', state.brand.accent2||'#39e58c');
+    document.documentElement.style.setProperty('--wm-opacity', state.brand.wmOpacity || 0.055);
+    if(state.brand.logoDataUrl){
+      brandLogo.style.backgroundImage = `url("${state.brand.logoDataUrl}")`;
+      document.documentElement.style.setProperty('--wm-url', `url("${state.brand.logoDataUrl}")`);
+      favicon.href = state.brand.logoDataUrl;
+    } else {
+      brandLogo.style.backgroundImage = 'none';
+      document.documentElement.style.setProperty('--wm-url', 'none');
+      favicon.href = '';
+    }
+    // Inputs sync
+    clubName.value = state.brand.title;
+    accentColor.value = state.brand.accent;
+    accent2Color.value = state.brand.accent2;
+    wmOpacity.value = state.brand.wmOpacity;
+  }
+
+  function readFileAsDataURL(file){
+    return new Promise((resolve,reject)=>{
+      const fr = new FileReader();
+      fr.onload = ()=> resolve(fr.result);
+      fr.onerror = reject;
+      fr.readAsDataURL(file);
+    });
+  }
+
+  logoFile.addEventListener('change', async ()=>{
+    const f = logoFile.files && logoFile.files[0];
+    if(!f) return;
+    try{
+      const dataUrl = await readFileAsDataURL(f);
+      state.brand.logoDataUrl = dataUrl;
+      save(); applyBranding(); renderAll();
+      log('Logo učitan.');
+    }catch(e){ log('Greška pri učitavanju logotipa.'); }
+  });
+
+  btnApplyBrand.addEventListener('click', ()=>{
+    state.brand.title = cleanName(clubName.value) || 'Žreb';
+    state.brand.accent = accentColor.value || '#00e5ff';
+    state.brand.accent2 = accent2Color.value || '#39e58c';
+    state.brand.wmOpacity = parseFloat(wmOpacity.value||'0.055');
+    save(); applyBranding(); renderAll(); log('Brending primenjen.');
+  });
+  btnResetBrand.addEventListener('click', ()=>{
+    state.brand = { title:'DSG • ŽREB', accent:'#00e5ff', accent2:'#39e58c', wmOpacity:0.055, logoDataUrl: state.brand.logoDataUrl||'' };
+    save(); applyBranding(); renderAll(); log('Brending resetovan (boje i naslov).');
+  });
+
+  // CORE
+  function buildInitialRounds(names){
+    const seeded = withByes(names);
+    const matches = [];
+    for(let i=0;i<seeded.length;i+=2){
+      matches.push({ a: seeded[i]||'', b: seeded[i+1]||'', winner:autoWinner(seeded[i], seeded[i+1]) });
+    }
+    const rounds = [matches];
+    let n = matches.length;
+    while(n>1){ n = Math.ceil(n/2); const next = []; for(let i=0;i<n;i++) next.push({a:'',b:'',winner:''}); rounds.push(next); }
+    return rounds;
+  }
+  function propagate(div){
+    const rounds = div.rounds;
+    for(let r=0; r<rounds.length-1; r++){
+      const cur = rounds[r], nxt = rounds[r+1];
+      for(let i=0;i<cur.length;i+=2){
+        const left = cur[i], right = cur[i+1] || {winner:''};
+        const idx = Math.floor(i/2);
+        nxt[idx].a = left.winner || '';
+        nxt[idx].b = right.winner || '';
+        const w = autoWinner(nxt[idx].a||'', nxt[idx].b||'');
+        if(w) nxt[idx].winner = w;
+        else if(nxt[idx].winner && ![nxt[idx].a,nxt[idx].b].includes(nxt[idx].winner)) nxt[idx].winner='';
+      }
+    }
+    div.bronze = {a:'', b:'', winner: (div.bronze && div.bronze.winner) || ''};
+    if(rounds.length >= 2){
+      const semis = rounds[rounds.length-2];
+      if(semis.length >= 2){
+        const s1 = semis[0], s2 = semis[1];
+        const s1loser = (s1.winner && s1.a && s1.b) ? ((s1.winner===s1.a)? s1.b : s1.a) : '';
+        const s2loser = (s2.winner && s2.a && s2.b) ? ((s2.winner===s2.a)? s2.b : s2.a) : '';
+        div.bronze.a = s1loser || '';
+        div.bronze.b = s2loser || '';
+        const w = autoWinner(div.bronze.a||'', div.bronze.b||'');
+        if(w) div.bronze.winner = w; else if(div.bronze.winner && div.bronze.winner!==div.bronze.a && div.bronze.winner!==div.bronze.b) div.bronze.winner='';
+      }
+    }
+  }
+  function getChampion(div){ if(!div.rounds.length) return ''; const f = div.rounds[div.rounds.length-1][0]; return f ? (f.winner||'') : ''; }
+
+  function renderMatch(container, key, matchObj, onChange){
+    const id = key + '_' + Math.random().toString(36).slice(2);
+    const aId = id+'_a', bId = id+'_b';
+    const isABye = matchObj.a==='BYE', isBBye = matchObj.b==='BYE';
+    const root = document.createElement('div'); root.className = 'match';
+    const aRow = document.createElement('div');
+    aRow.className = 'fighter'+(matchObj.winner===matchObj.a && matchObj.a ? ' winner':'' )+(isABye?' bye':'');
+    aRow.innerHTML = `<input type="radio" name="${id}" id="${aId}" ${(matchObj.winner===matchObj.a && matchObj.a)?'checked':''} ${(isABye || !matchObj.a)?'disabled':''} />
+                      <label for="${aId}">${matchObj.a || '—'}</label>`;
+    const bRow = document.createElement('div');
+    bRow.className = 'fighter'+(matchObj.winner===matchObj.b && matchObj.b ? ' winner':'' )+(isBBye?' bye':'');
+    bRow.innerHTML = `<input type="radio" name="${id}" id="${bId}" ${(matchObj.winner===matchObj.b && matchObj.b)?'checked':''} ${(isBBye || !matchObj.b)?'disabled':''} />
+                      <label for="${bId}">${matchObj.b || '—'}</label>`;
+    const pair = document.createElement('div'); pair.className = 'pair';
+    pair.appendChild(aRow); pair.appendChild(bRow);
+    root.appendChild(pair);
+    root.addEventListener('change', (e)=>{ matchObj.winner = (e.target.id===aId)? matchObj.a : matchObj.b; onChange && onChange(); });
+    container.appendChild(root);
+  }
+
+  function renderDivision(div, mount, label){
+    const wrapper = document.createElement('div'); wrapper.className = 'bracket';
+    const infoByes = Math.max(0, nextPow2(div.competitors.length) - div.competitors.length);
+    wrapper.innerHTML = `<div class="bracket-header"><h3>${label}</h3><div class="small">Ukupno: ${div.competitors.length}${infoByes?` · BYE: ${infoByes}`:''}</div></div>`;
+    const roundsRoot = document.createElement('div'); roundsRoot.className = 'rounds';
+    div.rounds.forEach((round, rIdx)=>{
+      const roundEl = document.createElement('div'); roundEl.className='round';
+      roundEl.innerHTML = `<h4>${roundName(rIdx, div.rounds.length)}</h4>`;
+      round.forEach((m, i)=>{ renderMatch(roundEl, `${label}_r${rIdx}_m${i}`, m, ()=>{ propagate(div); save(); autoUpdateAbsolute(); renderAll(); }); });
+      roundsRoot.appendChild(roundEl);
+    });
+    wrapper.appendChild(roundsRoot);
+    const bronzeTitle = document.createElement('div'); bronzeTitle.className='section-title'; bronzeTitle.textContent = `Borba za 3. mesto (${label})`;
+    const bronzeRoot = document.createElement('div'); bronzeRoot.className='rounds';
+    if(div.rounds.length>=2){
+      const bronzeRound = document.createElement('div'); bronzeRound.className='round';
+      bronzeRound.innerHTML = `<h4>Bronzana borba</h4>`;
+      renderMatch(bronzeRound, `${label}_bronze`, div.bronze, ()=>{ save(); renderAll(); });
+      bronzeRoot.appendChild(bronzeRound);
+    } else {
+      const note = document.createElement('div'); note.className='small'; note.style.padding='8px';
+      note.textContent = 'Bronzana borba se pojavljuje kada postoje polufinala (≥ 4 takmičara).';
+      bronzeRoot.appendChild(note);
+    }
+    wrapper.appendChild(bronzeTitle); wrapper.appendChild(bronzeRoot);
+    mount.appendChild(wrapper);
+  }
+
+  function renderAbsolute(){
+    absoluteRender.innerHTML='';
+    const abs = state.absolute;
+    if(!abs.rounds.length){
+      const p = document.createElement('div'); p.className='small'; p.textContent='Apsolutna još nije napravljena.';
+      absoluteRender.appendChild(p); return;
+    }
+    const label = 'Apsolutna';
+    const wrap = document.createElement('div'); wrap.className='bracket';
+    const infoByes = Math.max(0, nextPow2(abs.competitors.length) - abs.competitors.length);
+    wrap.innerHTML = `<div class="bracket-header"><h3>${label}</h3><div class="small">Učesnici: ${abs.competitors.length}${infoByes?` · BYE: ${infoByes}`:''} ${abs.manual?'(ručni unos)':'(auto)'}</div></div>`;
+    const roundsRoot = document.createElement('div'); roundsRoot.className='rounds';
+    abs.rounds.forEach((round, rIdx)=>{
+      const roundEl = document.createElement('div'); roundEl.className='round';
+      roundEl.innerHTML = `<h4>${roundName(rIdx, abs.rounds.length)}</h4>`;
+      round.forEach((m,i)=>{ renderMatch(roundEl, `ABS_r${rIdx}_m${i}`, m, ()=>{ propagate(abs); save(); renderAll(); }); });
+      roundsRoot.appendChild(roundEl);
+    });
+    wrap.appendChild(roundsRoot);
+    if(abs.includeBronze){
+      const bronzeTitle = document.createElement('div'); bronzeTitle.className='section-title'; bronzeTitle.textContent='Borba za 3. mesto (Apsolutna)';
+      const bronzeRoot = document.createElement('div'); bronzeRoot.className='rounds';
+      if(abs.rounds.length>=2){
+        const bronzeRound = document.createElement('div'); bronzeRound.className='round';
+        bronzeRound.innerHTML = `<h4>Bronzana borba</h4>`;
+        renderMatch(bronzeRound, `ABS_bronze`, abs.bronze, ()=>{ save(); renderAll(); });
+        bronzeRoot.appendChild(bronzeRound);
+      } else {
+        const note = document.createElement('div'); note.className='small'; note.style.padding='8px';
+        note.textContent = 'Bronzana borba se pojavljuje kada postoje polufinala (≥ 4 učesnika).';
+        bronzeRoot.appendChild(note);
+      }
+      wrap.appendChild(bronzeTitle); wrap.appendChild(bronzeRoot);
+    }
+    absoluteRender.appendChild(wrap);
+  }
+
+  function renderAll(){
+    // forms
+    categoryList.innerHTML='';
+    state.categories.forEach(c=>{
+      const card = document.createElement('div');
+      card.className = 'category-card';
+      card.innerHTML = `
+        <div class="grid-2">
+          <div class="row">
+            <label class="small">Naziv kategorije</label>
+            <input type="text" value="${c.name}" data-role="name" />
+          </div>
+          <div class="row">
+            <label class="small">Takmičari (jedan po liniji)</label>
+            <textarea data-role="list"></textarea>
+          </div>
+        </div>
+        <div class="category-actions">
+          <button data-act="build">Napravi žreb</button>
+          <button class="secondary" data-act="shuffle">Izmešaj listu</button>
+          <button class="ghost" data-act="reset">Poništi pobednike</button>
+          <button class="danger" data-act="remove">Ukloni kategoriju</button>
+        </div>
+        <div class="small">Ukupno: <span data-role="count">0</span></div>
+      `;
+      const nameInp = card.querySelector('[data-role="name"]');
+      const listTxt = card.querySelector('[data-role="list"]');
+      const countEl = card.querySelector('[data-role="count"]');
+      const btnBuild = card.querySelector('[data-act="build"]');
+      const btnShuffle = card.querySelector('[data-act="shuffle"]');
+      const btnReset = card.querySelector('[data-act="reset"]');
+      const btnRemove = card.querySelector('[data-act="remove"]');
+
+      function syncCount(){ countEl.textContent = c.competitors.length; }
+      function syncList(){ listTxt.value = c.competitors.join('\\n'); }
+
+      nameInp.addEventListener('input', ()=>{ c.name = cleanName(nameInp.value)||'Kategorija'; save(); renderAll(); });
+      listTxt.addEventListener('input', ()=>{ c.competitors = listTxt.value.split('\\n').map(s=>cleanName(s)).filter(Boolean); syncCount(); save(); });
+
+      btnBuild.addEventListener('click', ()=>{ c.rounds = buildInitialRounds(c.competitors); propagate(c); save(); autoUpdateAbsolute(true); renderAll(); });
+      btnShuffle.addEventListener('click', ()=>{ const arr = listTxt.value.split('\\n').map(s=>cleanName(s)).filter(Boolean); listTxt.value = shuffleList(arr).join('\\n'); listTxt.dispatchEvent(new Event('input')); });
+      btnReset.addEventListener('click', ()=>{ c.rounds.forEach(r=>r.forEach(m=>m.winner = autoWinner(m.a,m.b))); c.bronze.winner = autoWinner(c.bronze.a||'', c.bronze.b||''); propagate(c); save(); autoUpdateAbsolute(true); renderAll(); });
+      btnRemove.addEventListener('click', ()=>{ if(!confirm(`Ukloniti kategoriju "${c.name}"?`)) return; state.categories = state.categories.filter(x=>x!==c); save(); autoUpdateAbsolute(true); renderAll(); });
+
+      syncList(); syncCount();
+      categoryList.appendChild(card);
+    });
+
+    // Brackets
+    bracketsRender.innerHTML='';
+    state.categories.forEach(c=> renderDivision(c, bracketsRender, c.name));
+    renderAbsolute();
+  }
+
+  // Export
+  function roundNameExport(div){ return div.rounds.map((_,i)=>roundName(i,div.rounds.length)); }
+  function buildCSV(){
+    function roundRows(label, div){
+      const rows=[];
+      for(let r=0;r<div.rounds.length;r++){
+        const rn=roundName(r,div.rounds.length);
+        const round=div.rounds[r];
+        for(let i=0;i<round.length;i++){
+          const m=round[i];
+          rows.push([label,rn,i+1,m.a||'',m.b||'',m.winner||'']);
+        }
+      }
+      if(div.rounds.length>=2) rows.push([label,'Bronzana borba',1,div.bronze.a||'',div.bronze.b||'',div.bronze.winner||'']);
+      return rows;
+    }
+    const header=['Divizija','Runda','Borba #','Bork A','Bork B','Pobednik']; let rows=[header];
+    state.categories.forEach(c=> rows = rows.concat(roundRows(c.name,c)));
+    if(state.absolute.rounds.length) rows = rows.concat(roundRows('Apsolutna',state.absolute));
+    return rows.map(r=>r.map(cell=>{ const s=(cell??'').toString(); return /[",\n]/.test(s)? '"'+s.replace(/"/g,'""')+'"' : s; }).join(',')).join('\r\n');
+  }
+  function buildXLSHtml(){
+    function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    let html='<html><head><meta charset="UTF-8"></head><body>';
+    state.categories.forEach(c=>{
+      html+=`<h3>${esc(c.name)}</h3>`;
+      html+='<table border="1"><tr><th>Runda</th><th>Borba #</th><th>Bork A</th><th>Bork B</th><th>Pobednik</th></tr>';
+      c.rounds.forEach((round,rIdx)=>{ const rn=esc(roundName(rIdx,c.rounds.length)); round.forEach((m,i)=>{ html+=`<tr><td>${rn}</td><td>${i+1}</td><td>${esc(m.a||'')}</td><td>${esc(m.b||'')}</td><td>${esc(m.winner||'')}</td></tr>`; }); });
+      if(c.rounds.length>=2){ html+=`<tr><td>Bronzana borba</td><td>1</td><td>${esc(c.bronze.a||'')}</td><td>${esc(c.bronze.b||'')}</td><td>${esc(c.bronze.winner||'')}</td></tr>`; }
+      html+='</table><br/>';
+    });
+    if(state.absolute.rounds.length){
+      html+='<h3>Apsolutna</h3><table border="1"><tr><th>Runda</th><th>Borba #</th><th>Bork A</th><th>Bork B</th><th>Pobednik</th></tr>';
+      state.absolute.rounds.forEach((round,rIdx)=>{ const rn=esc(roundName(rIdx,state.absolute.rounds.length)); round.forEach((m,i)=>{ html+=`<tr><td>${rn}</td><td>${i+1}</td><td>${esc(m.a||'')}</td><td>${esc(m.b||'')}</td><td>${esc(m.winner||'')}</td></tr>`; }); });
+      if(state.absolute.rounds.length>=2){ html+=`<tr><td>Bronzana borba</td><td>1</td><td>${esc(state.absolute.bronze.a||'')}</td><td>${esc(state.absolute.bronze.b||'')}</td><td>${esc(state.absolute.bronze.winner||'')}</td></tr>`; }
+      html+='</table>';
+    }
+    html+='</body></html>'; return html;
+  }
+
+  // Save/Load/Add
+  function save(){ safeSet(JSON.stringify(state)); }
+  function load(){ const raw = safeGet(); if(!raw) return false; try{ state = JSON.parse(raw); return true; } catch(e){ log('Greška pri učitavanju stanja.'); return false; } }
+  function addCategory(name, list){
+    const c = { id: uid(), name: name||'Nova kategorija', competitors: (list||[]).slice(), rounds: [], bronze:{a:'',b:'',winner:''} };
+    state.categories.push(c); save(); return c;
+  }
+
+  // Expose API
+  window.addCategoryNow = function(){
+    try{
+      const name = cleanName(newCatNameInp.value)||'Nova kategorija';
+      const c = addCategory(name, []);
+      newCatNameInp.value='';
+      renderAll();
+      log('Dodato: ' + c.name);
+      requestAnimationFrame(()=>{
+        const inputs = qsa('.category-card input[data-role="name"]');
+        if(inputs.length){ const el = inputs[inputs.length-1]; el.focus(); el.select && el.select(); el.scrollIntoView({behavior:'smooth', block:'center'}); }
+      });
+    }catch(e){ log('Greška prilikom dodavanja: ' + (e?.message||e)); }
+  };
+
+  function championsFromAllCategories(){ const names=[]; state.categories.forEach(c=>{ const champ=getChampion(c); if(champ) names.push(champ); }); return names; }
+  function buildAbsolute(names){ state.absolute.competitors = names; state.absolute.rounds = buildInitialRounds(names); propagate(state.absolute); }
+  function autoUpdateAbsolute(force=false){
+    if(state.absolute.manual) return;
+    const names = championsFromAllCategories();
+    if(force || JSON.stringify(names)!==JSON.stringify(state.absolute.competitors)){ buildAbsolute(names); save(); renderAbsolute(); }
+  }
+
+  function init(forceFresh=false){
+    const loaded = (!forceFresh && load());
+    if(!loaded){
+      addCategory('-70 kg', ['Đurađ','Dragoš','Bogdan','Filip','Neca','Ognjen G.','Aca R.']);
+      addCategory('70+ kg', ['Andrej','Luka S.','Strahinja','Đole','Aca P.','Ognjen D.']);
+      state.absolute = { competitors:[], rounds:[], bronze:{a:'',b:'',winner:''}, includeBronze:false, manual:false };
+      state.brand = state.brand || { title:'DSG • ŽREB', accent:'#00e5ff', accent2:'#39e58c', wmOpacity:0.055, logoDataUrl:'' };
+      save();
+    }
+    if(!state.categories.some(c=>c.rounds.length)){ state.categories.forEach(c=>{ c.rounds = buildInitialRounds(c.competitors); propagate(c); }); }
+    applyBranding();
+    autoUpdateAbsolute(true);
+    renderAll();
+    log('Spremno. Učitaj logo u sekciji Brending ili odmah kreiraj žreb.');
+  }
+
+  btnBuildAll.addEventListener('click', ()=>{ state.categories.forEach(c=>{ c.rounds = buildInitialRounds(c.competitors); propagate(c); }); save(); autoUpdateAbsolute(true); renderAll(); });
+  btnShuffleAll.addEventListener('click', ()=>{ state.categories.forEach(c=>{ c.competitors = shuffleList(c.competitors.slice()); }); save(); renderAll(); });
+  btnResetAll.addEventListener('click', ()=>{
+    state.categories.forEach(c=>{ c.rounds.forEach(r=>r.forEach(m=>m.winner = autoWinner(m.a,m.b))); c.bronze.winner = autoWinner(c.bronze.a||'', c.bronze.b||''); propagate(c); });
+    state.absolute.rounds.forEach(r=>r.forEach(m=>m.winner = autoWinner(m.a,m.b))); state.absolute.bronze.winner = autoWinner(state.absolute.bronze.a||'', state.absolute.bronze.b||''); propagate(state.absolute);
+    save(); autoUpdateAbsolute(true); renderAll(); log('Pobednici poništeni.');
+  });
+  btnClearAll.addEventListener('click', ()=>{ if(!confirm('Potvrdi reset svih podataka?')) return; safeRemove(); state = { categories:[], absolute:{competitors:[], rounds:[], bronze:{a:'',b:'',winner:''}, includeBronze:false, manual:false}, brand:{ title:'DSG • ŽREB', accent:'#00e5ff', accent2:'#39e58c', wmOpacity:0.055, logoDataUrl: state.brand.logoDataUrl||'' } }; init(true); log('Resetovano.'); });
+  btnCSV.addEventListener('click', ()=>{ const csv=buildCSV(); const blob=new Blob([csv], {type:'text/csv;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='rezultati_zreb_v6_1.csv'; a.click(); });
+  btnXLS.addEventListener('click', ()=>{ const html=buildXLSHtml(); const blob=new Blob([html], {type:'application/vnd.ms-excel'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='rezultati_zreb_v6_1.xls'; a.click(); });
+  btnPrint.addEventListener('click', ()=>window.print());
+  absBronze.addEventListener('change', ()=>{ state.absolute.includeBronze = !!absBronze.checked; save(); renderAbsolute(); }, {passive:true});
+  btnApplyAbsManual.addEventListener('click', ()=>{ const names = absManual.value.split('\\n').map(s=>cleanName(s)).filter(Boolean); state.absolute.manual = names.length>0; if(state.absolute.manual){ buildAbsolute(names); } else { autoUpdateAbsolute(true); } save(); renderAll(); log(state.absolute.manual?'Apsolutna: ručni režim':'Apsolutna: auto režim'); });
+
+  init();
+})();
+</script>
+</body>
+</html>
